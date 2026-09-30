@@ -1,21 +1,17 @@
 import { Link } from "react-router-dom";
 
-
 function AnimeCard({ anime }) {
-  if (!anime) {
-    return null;
-  }
-
-  const image =
-    anime.images?.jpg?.large_image_url ||
-    anime.images?.jpg?.image_url;
+  if (!anime) return null;
 
   return (
-    <Link to={`/anime/${anime.mal_id}`} className="anime-card">
+    <Link
+      to={`/anime/${anime.id}`}
+      className="anime-card"
+    >
       <div className="anime-card__image-wrapper">
-        {image ? (
+        {anime.image ? (
           <img
-            src={image}
+            src={anime.image}
             alt={`${anime.title} poster`}
             className="anime-card__image"
           />
@@ -27,12 +23,20 @@ function AnimeCard({ anime }) {
       </div>
 
       <div className="anime-card__content">
-        <h3 className="anime-card__title">{anime.title}</h3>
+        <h3 className="anime-card__title">
+          {anime.title}
+        </h3>
 
         <div className="anime-card__meta">
-          {anime.score && <span>★ {anime.score}</span>}
+          {anime.score != null && (
+            <span>
+              ★ {anime.score.toFixed(1)}
+            </span>
+          )}
 
-          {anime.type && <span>{anime.type}</span>}
+          {anime.type && (
+            <span>{anime.type}</span>
+          )}
         </div>
       </div>
     </Link>
