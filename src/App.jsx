@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 import Navbar from "./components/layout/Navbar";
 import PageContainer from "./components/layout/PageContainer";
 
@@ -10,23 +15,54 @@ import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import AnimeDetail from "./pages/AnimeDetail";
 
+import { AuthProvider } from "./context/AuthContext";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
 
-      <PageContainer>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/discover" element={<Discover />} />
-          <Route path="/my-list" element={<MyList />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/anime/:id" element={<AnimeDetail />} />
-        </Routes>
-      </PageContainer>
-    </BrowserRouter>
+        <PageContainer>
+          <Routes>
+            <Route
+              path="/"
+              element={<Home />}
+            />
+
+            <Route
+              path="/discover"
+              element={<Discover />}
+            />
+
+            <Route
+              path="/my-list"
+              element={<MyList />}
+            />
+
+            <Route
+              path="/calendar"
+              element={<Calendar />}
+            />
+
+            <Route
+              path="/search"
+              element={<Search />}
+            />
+
+            <Route
+              path="/profile"
+              element={<Profile />}
+            />
+
+            <Route
+              path="/anime/:id"
+              element={<AnimeDetail />}
+            />
+          </Routes>
+        </PageContainer>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
