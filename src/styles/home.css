@@ -1,0 +1,249 @@
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home__welcome {
+  max-width: 700px;
+  margin-bottom: 48px;
+}
+
+.home__eyebrow {
+  margin: 0 0 10px;
+  color: var(--muted-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.home__title {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.home__subtitle {
+  max-width: 600px;
+  margin: 16px 0 0;
+  color: var(--muted-text);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Top section */
+
+.home__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.home__section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.home__section-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+/* Continue Watching */
+
+.home__continue-placeholder {
+  min-height: 220px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.home__continue-placeholder strong {
+  font-size: 1rem;
+}
+
+.home__continue-placeholder p {
+  max-width: 420px;
+  margin: 8px 0 0;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Airing */
+
+.home__airing {
+  min-width: 0;
+}
+
+.home__airing-list {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.home__airing-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  min-width: 0;
+  padding: 14px 16px;
+
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+
+  transition: background-color 0.2s ease;
+}
+
+.home__airing-item:last-child {
+  border-bottom: 0;
+}
+
+.home__airing-item:hover {
+  background: #fafafa;
+}
+
+.home__airing-item div {
+  min-width: 0;
+}
+
+.home__airing-item strong {
+  display: block;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.home__airing-item span {
+  display: block;
+  margin-top: 3px;
+
+  color: var(--muted-text);
+  font-size: 0.72rem;
+}
+
+.home__airing-item time {
+  flex-shrink: 0;
+  color: var(--muted-text);
+  font-size: 0.75rem;
+}
+
+/* Sections */
+
+.home__section {
+  margin-top: 56px;
+}
+
+.home__muted {
+  color: var(--muted-text);
+}
+
+/* Mobile */
+
+@media (max-width: 850px) {
+  .home__top {
+    grid-template-columns: 1fr;
+  }
+
+  .home__airing {
+    max-width: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .home__welcome {
+    margin-bottom: 40px;
+  }
+
+  .home__section {
+    margin-top: 40px;
+  }
+
+  .home__continue-placeholder {
+    min-height: 180px;
+  }
+}
+
+.home-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.home-progress-card {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: #ffffff;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.home-progress-card:hover {
+  background: #fafafa;
+}
+
+.home-progress-card__image-wrapper {
+  width: 72px;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f2f2f2;
+}
+
+.home-progress-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-progress-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--muted-text);
+  font-size: 0.7rem;
+}
+
+.home-progress-card__content {
+  min-width: 0;
+  align-self: center;
+}
+
+.home-progress-card__content h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .home-progress-grid {
+    grid-template-columns: 1fr;
+  }
+}
