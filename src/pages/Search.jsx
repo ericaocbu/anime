@@ -74,7 +74,7 @@ function Search() {
         <div className="search-results-page__message">
           <h2>Search is temporarily unavailable.</h2>
           <p>
-            Jikan couldn't complete this search right now.
+            Couldn't complete this search right now.
             Please try again in a moment.
           </p>
         </div>
