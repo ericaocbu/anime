@@ -181,7 +181,7 @@ function Home() {
       <div className="home-top">
         {isLoggedIn ? (
           <section className="home-continue">
-            <div className="home-section-header">
+            <div className="home-section-header home-continue-header">
               <div>
                 <p className="home-section-label">
                   PICK UP WHERE YOU LEFT OFF
@@ -198,11 +198,11 @@ function Home() {
 
             {continueWatching.length > 0 ? (
               <div className="home-progress-grid">
-                {continueWatching.map((anime) => (
+                {continueWatching.map((anime, index) => (
                   <Link
                     key={anime.id}
                     to={`/anime/${anime.id}`}
-                    className="home-progress-card"
+                    className={`home-progress-card home-progress-card-${index + 1}`}
                   >
                     <div className="home-progress-card-image-wrapper">
                       {anime.image ? (
@@ -216,6 +216,7 @@ function Home() {
                           No image
                         </div>
                       )}
+                      <div className="home-progress-card-image-overlay" />
                     </div>
 
                     <div className="home-progress-card-content">
@@ -396,7 +397,9 @@ function Home() {
               <h2>Airing Now</h2>
             </div>
 
-            <Link to="/calendar">Calendar →</Link>
+            <Link to="/calendar">
+              Calendar →
+            </Link>
           </div>
 
           {scheduleLoading && (
