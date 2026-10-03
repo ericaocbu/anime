@@ -1,6 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDiscoverAnime } from "../hooks/useDiscover";
 import "../styles/discover.css";
+
+const MOOD_INFO = {
+  intense: {
+    title: "Something intense",
+    description:
+      "High stakes, battles, and nonstop momentum.",
+  },
+  emotional: {
+    title: "Something emotional",
+    description:
+      "Stories that stay with you after the episode ends.",
+  },
+  magical: {
+    title: "Something magical",
+    description:
+      "Other worlds, strange powers, and the impossible.",
+  },
+  fun: {
+    title: "Something fun",
+    description:
+      "Easygoing stories when you just want to have fun.",
+  },
+  darker: {
+    title: "Something darker",
+    description:
+      "Unsettling stories with a darker edge.",
+  },
+  futuristic: {
+    title: "Something futuristic",
+    description:
+      "Technology, machines, and worlds beyond today.",
+  },
+};
 
 function DiscoverRow({ title, anime }) {
   if (!anime?.length) {
@@ -68,25 +101,43 @@ function DiscoverRow({ title, anime }) {
 }
 
 function Discover() {
+  const [searchParams] = useSearchParams();
+
+  const mood = searchParams.get("mood");
+
+  const genres = searchParams.get("genres")
+    ? searchParams
+        .get("genres")
+        .split(",")
+        .filter(Boolean)
+    : [];
+
   const {
     data,
     isLoading,
     isError,
     error,
-  } = useDiscoverAnime();
+  } = useDiscoverAnime(genres);
+
+  const moodInfo = mood
+    ? MOOD_INFO[mood]
+    : null;
 
   if (isLoading) {
     return (
       <div className="discover">
         <header className="discover__header">
           <p className="discover__eyebrow">
-            Explore
+            {moodInfo ? "YOUR MOOD" : "EXPLORE"}
           </p>
 
-          <h1>Discover</h1>
+          <h1>
+            {moodInfo?.title || "Discover"}
+          </h1>
 
           <p>
-            Find something new to watch.
+            {moodInfo?.description ||
+              "Find your next anime."}
           </p>
         </header>
 
@@ -110,7 +161,7 @@ function Discover() {
           <h1>Discover</h1>
 
           <p>
-            Find something new to watch.
+            Find your next anime.
           </p>
         </header>
 
@@ -128,6 +179,42 @@ function Discover() {
           >
             Try Again
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (mood && genres.length > 0) {
+    return (
+      <div className="discover">
+        <header className="discover__header">
+          <p className="discover__eyebrow">
+            YOUR MOOD
+          </p>
+
+          <h1>
+            {moodInfo?.title || "For your mood"}
+          </h1>
+
+          <p>
+            {moodInfo?.description ||
+              "Anime selected for your mood."}
+          </p>
+
+          <div className="discover__genres">
+            {genres.map((genre) => (
+              <span key={genre}>
+                {genre} 
+              </span>
+            ))}
+          </div>
+        </header>
+
+        <div className="discover__rows">
+          <DiscoverRow
+            title="Recommended for you"
+            anime={data.filtered}
+          />
         </div>
       </div>
     );

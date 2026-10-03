@@ -30,7 +30,21 @@ const DISCOVER_FIELDS = `
 `;
 
 const DISCOVER_QUERY = `
-  query {
+  query DiscoverAnime($genres: [String!]) {
+    filtered: Page(
+      page: 1
+      perPage: 24
+    ) {
+      media(
+        type: ANIME
+        genre_in: $genres
+        sort: [POPULARITY_DESC]
+        isAdult: false
+      ) {
+        ${DISCOVER_FIELDS}
+      }
+    }
+
     highlyRated: Page(
       page: 1
       perPage: 12
@@ -206,8 +220,11 @@ function normalizeRow(row) {
     .filter(Boolean);
 }
 
-export function discoverAnime() {
-  return anilistRequest(DISCOVER_QUERY).then((data) => ({
+export function discoverAnime(genres = []) {
+  return anilistRequest(DISCOVER_QUERY, {
+    genres: genres.length > 0 ? genres : null,
+  }).then((data) => ({
+    filtered: normalizeRow(data?.filtered),
     highlyRated: normalizeRow(data?.highlyRated),
     popular: normalizeRow(data?.popular),
     upcoming: normalizeRow(data?.upcoming),

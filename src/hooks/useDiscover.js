@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { discoverAnime } from "../api/discover";
 
-export function useDiscoverAnime() {
+export function useDiscoverAnime(genres = []) {
   return useQuery({
-    queryKey: ["discover"],
-    queryFn: discoverAnime,
+    queryKey: ["discover", genres],
+    queryFn: () => discoverAnime(genres),
   });
 }

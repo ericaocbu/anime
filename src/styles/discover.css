@@ -15,6 +15,13 @@
   text-transform: uppercase;
 }
 
+.discover__genres span {
+  display: inline-flex;
+  margin-right: 8px;
+  border: 1px solid #7790aa;
+  padding: 3px;
+}
+
 .discover__header h1 {
   margin: 0;
   font-size: clamp(2rem, 4vw, 3rem);
