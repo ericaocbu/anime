@@ -20,224 +20,313 @@ function MyList() {
   const { myList, removeAnime } = useMyList();
 
   const counts = {
-    watching: myList.filter(
-      (anime) => anime.listStatus === "watching"
-    ).length,
+    all: myList.length,
 
-    completed: myList.filter(
-      (anime) => anime.listStatus === "completed"
-    ).length,
+    watching: myList.filter((anime) => anime.listStatus === "watching").length,
 
-    planned: myList.filter(
-      (anime) => anime.listStatus === "planned"
-    ).length,
+    completed: myList.filter((anime) => anime.listStatus === "completed")
+      .length,
 
-    paused: myList.filter(
-      (anime) => anime.listStatus === "paused"
-    ).length,
+    planned: myList.filter((anime) => anime.listStatus === "planned").length,
 
-    dropped: myList.filter(
-      (anime) => anime.listStatus === "dropped"
-    ).length,
+    paused: myList.filter((anime) => anime.listStatus === "paused").length,
+
+    dropped: myList.filter((anime) => anime.listStatus === "dropped").length,
   };
 
   const filteredList =
     activeStatus === "all"
       ? myList
-      : myList.filter(
-          (anime) =>
-            anime.listStatus === activeStatus
-        );
+      : myList.filter((anime) => anime.listStatus === activeStatus);
+
+  const continueWatching = myList.filter(
+    (anime) => anime.listStatus === "watching",
+  );
+
+  const getProgress = (anime) => {
+    if (typeof anime.episodes !== "number" || anime.episodes <= 0) {
+      return 0;
+    }
+
+    return Math.min(((anime.currentEpisode || 0) / anime.episodes) * 100, 100);
+  };
+
+  const getStatusLabel = (status) => {
+    if (!status) {
+      return "";
+    }
+
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
 
   return (
     <div className="my-list">
-      <header className="my-list__header">
-        <p className="my-list__eyebrow">
-          YOUR LIBRARY
-        </p>
+      {/* Header */}
 
-        <h1>My List</h1>
+      <header className="my-list-header">
+        <div className="my-list-header-copy">
+          <p className="my-list-eyebrow">YOUR LIBRARY</p>
 
-        <p>
-          Keep track of what you're watching,
-          what you've finished, and what you want
-          to watch next.
-        </p>
+          <h1>My List</h1>
+
+          <p className="my-list-description">
+            Everything you're watching, planning, and coming back to.
+          </p>
+        </div>
+
+        <div className="my-list-total">
+          <strong>{counts.all}</strong>
+          <span>Anime saved</span>
+        </div>
       </header>
 
       {/* Stats */}
 
-      <section className="my-list__stats">
-        <div>
-          <strong>{counts.watching}</strong>
-          <span>Watching</span>
-        </div>
+      <section className="my-list-stats">
+        {statuses
+          .filter((status) => status.id !== "all")
+          .map((status) => (
+            <button
+              key={status.id}
+              className="my-list-stat"
+              onClick={() => setActiveStatus(status.id)}
+            >
+              <strong>{counts[status.id]}</strong>
 
-        <div>
-          <strong>{counts.completed}</strong>
-          <span>Completed</span>
-        </div>
-
-        <div>
-          <strong>{counts.planned}</strong>
-          <span>Planned</span>
-        </div>
-
-        <div>
-          <strong>{counts.paused}</strong>
-          <span>Paused</span>
-        </div>
-
-        <div>
-          <strong>{counts.dropped}</strong>
-          <span>Dropped</span>
-        </div>
+              <span>{status.label}</span>
+            </button>
+          ))}
       </section>
 
       {/* Filters */}
 
-      <div className="my-list__filters">
+      <nav className="my-list-filters">
         {statuses.map((status) => (
           <button
             key={status.id}
             className={
               activeStatus === status.id
-                ? "my-list__filter my-list__filter--active"
-                : "my-list__filter"
+                ? "my-list-filter my-list-filter-active"
+                : "my-list-filter"
             }
-            onClick={() =>
-              setActiveStatus(status.id)
-            }
+            onClick={() => setActiveStatus(status.id)}
           >
-            {status.label}
+            <span>{status.label}</span>
+
+            <span className="my-list-filter-count">{counts[status.id]}</span>
           </button>
         ))}
-      </div>
+      </nav>
 
-      {/* Empty state */}
+      {/* Continue Watching */}
+
+      {activeStatus === "all" && continueWatching.length > 0 && (
+        <section className="my-list-continue">
+          <div className="my-list-section-header">
+            <div>
+              <p className="my-list-section-label">
+                PICK UP WHERE YOU LEFT OFF
+              </p>
+
+              <h2>Continue Watching</h2>
+            </div>
+
+            <button
+              className="my-list-section-link"
+              onClick={() => setActiveStatus("watching")}
+            >
+              View all
+              <span>→</span>
+            </button>
+          </div>
+
+          <div className="my-list-continue-grid">
+            {continueWatching.slice(0, 3).map((anime) => {
+              const hasEpisodes =
+                typeof anime.episodes === "number" && anime.episodes > 0;
+
+              const progress = getProgress(anime);
+
+              return (
+                <Link
+                  key={anime.id}
+                  to={`/anime/${anime.id}`}
+                  className="my-list-continue-card"
+                >
+                  <div className="my-list-continue-poster">
+                    {anime.image ? (
+                      <img src={anime.image} alt={`${anime.title} poster`} />
+                    ) : (
+                      <div className="my-list-poster-placeholder">No image</div>
+                    )}
+                  </div>
+
+                  <div className="my-list-continue-content">
+                    <p className="my-list-continue-label">
+                      {hasEpisodes
+                        ? `Episode ${anime.currentEpisode || 0}`
+                        : "Currently watching"}
+                    </p>
+
+                    <h3>{anime.title}</h3>
+
+                    {hasEpisodes && (
+                      <>
+                        <div className="my-list-continue-progress">
+                          <div
+                            className="my-list-continue-progress-bar"
+                            style={{
+                              width: `${progress}%`,
+                            }}
+                          />
+                        </div>
+
+                        <div className="my-list-continue-meta">
+                          <span>Episode {anime.currentEpisode || 0}</span>
+
+                          <span>{anime.episodes} episodes</span>
+                        </div>
+                      </>
+                    )}
+
+                    <span className="my-list-continue-arrow">Continue →</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Library */}
+
+      {filteredList.length > 0 && (
+        <section className="my-list-library">
+          <div className="my-list-section-header">
+            <div>
+              <p className="my-list-section-label">
+                {activeStatus === "all"
+                  ? "YOUR COLLECTION"
+                  : "FILTERED COLLECTION"}
+              </p>
+
+              <h2>
+                {activeStatus === "all"
+                  ? "All Anime"
+                  : getStatusLabel(activeStatus)}
+              </h2>
+            </div>
+
+            <span className="my-list-result-count">
+              {filteredList.length}{" "}
+              {filteredList.length === 1 ? "title" : "titles"}
+            </span>
+          </div>
+
+          <div className="my-list-grid">
+            {filteredList.map((anime) => {
+              const hasEpisodes =
+                typeof anime.episodes === "number" && anime.episodes > 0;
+
+              const progress = getProgress(anime);
+
+              return (
+                <article key={anime.id} className="my-list-card">
+                  <Link
+                    to={`/anime/${anime.id}`}
+                    className="my-list-poster-wrapper"
+                  >
+                    {anime.image ? (
+                      <img
+                        src={anime.image}
+                        alt={`${anime.title} poster`}
+                        className="my-list-poster"
+                      />
+                    ) : (
+                      <div className="my-list-poster-placeholder">No image</div>
+                    )}
+
+                    <span
+                      className={`my-list-status my-list-status-${anime.listStatus}`}
+                    >
+                      {getStatusLabel(anime.listStatus)}
+                    </span>
+                  </Link>
+
+                  <div className="my-list-card-content">
+                    <div className="my-list-card-heading">
+                      <h3>
+                        <Link to={`/anime/${anime.id}`}>{anime.title}</Link>
+                      </h3>
+
+                      <button
+                        className="my-list-remove"
+                        onClick={() => removeAnime(anime.id)}
+                        aria-label={`Remove ${anime.title} from your list`}
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                    {hasEpisodes ? (
+                      <div className="my-list-progress">
+                        <div className="my-list-progress-header">
+                          <span>Episode {anime.currentEpisode || 0}</span>
+
+                          <span>{anime.episodes}</span>
+                        </div>
+
+                        <div className="my-list-progress-track">
+                          <div
+                            className="my-list-progress-bar"
+                            style={{
+                              width: `${progress}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="my-list-no-progress">
+                        Episode information unavailable
+                      </p>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Empty State */}
 
       {filteredList.length === 0 && (
-        <div className="my-list__empty">
+        <section className="my-list-empty">
+          <div className="my-list-empty-mark">+</div>
+
+          <p className="my-list-section-label">NOTHING HERE YET</p>
+
           <h2>
             {activeStatus === "all"
               ? "Your list is empty"
-              : `No ${activeStatus} anime`}
+              : `No ${getStatusLabel(activeStatus).toLowerCase()} anime`}
           </h2>
 
           <p>
             {activeStatus === "all"
-              ? "Add anime to your list and they'll appear here."
-              : "Anime with this status will appear here."}
+              ? "Start building your personal library by discovering something new."
+              : `Anime you mark as ${getStatusLabel(
+                  activeStatus,
+                ).toLowerCase()} will appear here.`}
           </p>
 
           {activeStatus === "all" && (
-            <Link
-              to="/discover"
-              className="my-list__discover-button"
-            >
+            <Link to="/discover" className="my-list-discover-button">
               Discover Anime
+              <span>→</span>
             </Link>
           )}
-        </div>
-      )}
-
-      {/* Anime */}
-
-      {filteredList.length > 0 && (
-        <div className="my-list__grid">
-          {filteredList.map((anime) => {
-            const image =
-              anime.images?.jpg?.large_image_url ||
-              anime.images?.jpg?.image_url;
-
-            const hasEpisodes =
-              typeof anime.episodes === "number" &&
-              anime.episodes > 0;
-
-            return (
-              <article
-                key={anime.id}
-                className="my-list__card"
-              >
-                <Link
-                  to={`/anime/${anime.id}`}
-                  className="my-list__poster-wrapper"
-                >
-                  {anime.image ? (
-                    <img
-                      src={anime.image}
-                      alt={`${anime.title} poster`}
-                      className="my-list__poster"
-                    />
-                  ) : (
-                    <div className="my-list__poster-placeholder">
-                      No image
-                    </div>
-                  )}
-                </Link>
-
-                <div className="my-list__card-content">
-                  <div>
-                    <h2>
-                      <Link
-                        to={`/anime/${anime.id}`}
-                      >
-                        {anime.title}
-                      </Link>
-                    </h2>
-
-                    <span className="my-list__status">
-                      {anime.listStatus}
-                    </span>
-                  </div>
-
-                  <div className="my-list__progress">
-                    <div className="my-list__progress-header">
-                      <span>
-                        Episode{" "}
-                        {anime.currentEpisode || 0}
-                      </span>
-
-                      {hasEpisodes && (
-                        <span>
-                          / {anime.episodes}
-                        </span>
-                      )}
-                    </div>
-
-                    {hasEpisodes && (
-                      <div className="my-list__progress-track">
-                        <div
-                          className="my-list__progress-bar"
-                          style={{
-                            width: `${
-                              Math.min(
-                                ((anime.currentEpisode ||
-                                  0) /
-                                  anime.episodes) *
-                                  100,
-                                100
-                              )
-                            }%`,
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    className="my-list__remove"
-                    onClick={() =>
-                      removeAnime(anime.id)
-                    }
-                  >
-                    Remove
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        </section>
       )}
     </div>
   );
