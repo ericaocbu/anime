@@ -620,9 +620,6 @@ function Profile() {
   return (
     <div className="profile">
       <section className="profile-hero">
-        <div className="profile-hero__glow profile-hero__glow--one" />
-        <div className="profile-hero__glow profile-hero__glow--two" />
-
         <div className="profile-avatar">
           {profile?.avatar_url ? (
             <img src={profile.avatar_url} alt={`${profileName} profile`} />
