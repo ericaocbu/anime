@@ -12,8 +12,15 @@
 
   --content-width: 1280px;
   --page-padding: 32px;
+
   --border-color: #e8e8e8;
   --muted-text: #707070;
+
+  /* Brand Accent */
+  --accent: #c85c50;
+  --accent-dark: #a4483c;
+  --accent-light: #fff0ed;
+  --accent-border: #e4a198;
 }
 
 * {
@@ -51,7 +58,9 @@ img {
   max-width: 100%;
 }
 
-/* Navigation */
+/* =========================================
+   NAVIGATION
+========================================= */
 
 .navbar {
   position: sticky;
@@ -89,6 +98,7 @@ img {
   gap: 9px;
 
   color: #1f1f1f;
+
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -104,7 +114,7 @@ img {
   border-radius: 9px;
 
   background: #1f1f1f;
-  color: #ffffff;
+  color: #fabfb7;
 
   font-size: 0.82rem;
   font-weight: 700;
@@ -158,11 +168,11 @@ img {
 
 .navbar-link-active {
   color: #1f1f1f;
-  background: #f1f1f1;
+  background: #ffe9e6;
   font-weight: 600;
 }
 
-/* Small active indicator */
+/* Active indicator */
 
 .navbar-link-active::after {
   content: "";
@@ -171,12 +181,12 @@ img {
   left: 50%;
   bottom: -17px;
 
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 
   border-radius: 50%;
 
-  background: #1f1f1f;
+  background: var(--accent);
 
   transform: translateX(-50%);
 }
@@ -264,7 +274,9 @@ img {
   color: #ffffff;
 }
 
-/* Pages */
+/* =========================================
+   PAGES
+========================================= */
 
 .page-container {
   width: min(100%, var(--content-width));
@@ -272,7 +284,9 @@ img {
   padding: 40px var(--page-padding) 80px;
 }
 
-/* Mobile */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media (max-width: 850px) {
   .navbar-inner {
@@ -342,44 +356,6 @@ img {
 
   .navbar-actions {
     flex-shrink: 0;
-  }
-
-  .page-container {
-    padding-top: 28px;
-  }
-}
-
-/* Pages */
-
-.page-container {
-  width: min(100%, var(--content-width));
-  margin: 0 auto;
-  padding: 40px var(--page-padding) 80px;
-}
-
-/* Mobile */
-
-@media (max-width: 700px) {
-  :root {
-    --page-padding: 20px;
-  }
-
-  .navbar__inner {
-    overflow-x: auto;
-  }
-
-  .navbar__links {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .navbar__link {
-    padding: 9px 10px;
-    font-size: 0.85rem;
-  }
-
-  .navbar__link svg {
-    display: none;
   }
 
   .page-container {
