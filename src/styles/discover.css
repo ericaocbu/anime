@@ -55,7 +55,7 @@
 
   margin: 0 0 11px;
 
-  color: #999999;
+  color: var(--accent-dark, #8f2f2f);
 
   font-size: 0.65rem;
   font-weight: 750;
@@ -124,7 +124,7 @@
 
   margin-bottom: 8px;
 
-  color: #999999;
+  color: #8f2f2f;
 
   font-size: 0.6rem;
   font-weight: 700;
@@ -141,12 +141,12 @@
   appearance: none;
   -webkit-appearance: none;
 
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--accent-border, #e8caca);
   border-radius: 13px;
 
   outline: none;
 
-  background: #f6f6f4;
+  background: var(--accent-soft, #f6eaea);
   color: #202020;
 
   font-family: inherit;
@@ -162,18 +162,18 @@
 }
 
 .discover-genre-select select:hover {
-  border-color: rgba(0, 0, 0, 0.16);
+  border-color: var(--accent, #a33a3a);
 
   background: #ffffff;
 }
 
 .discover-genre-select select:focus {
-  border-color: rgba(0, 0, 0, 0.22);
+  border-color: var(--accent, #a33a3a);
 
   background: #ffffff;
 
   box-shadow:
-    0 0 0 3px rgba(0, 0, 0, 0.05);
+    0 0 0 3px rgba(163, 58, 58, 0.1);
 }
 
 .discover-genre-select-arrow {
@@ -191,12 +191,22 @@
 
   border-radius: 50%;
 
-  background: #1a1a1a;
+  background: var(--accent, #a33a3a);
   color: #ffffff;
 
   font-size: 0.7rem;
 
   pointer-events: none;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.discover-genre-select:hover .discover-genre-select-arrow {
+  background: var(--accent-dark, #8f2f2f);
+
+  transform: translateY(1px);
 }
 
 /* --------------------------------
@@ -216,6 +226,9 @@
     radial-gradient(circle at 85% 15%,
       rgba(255, 255, 255, 0.08),
       transparent 28%),
+    radial-gradient(circle at 5% 100%,
+      rgba(163, 58, 58, 0.14),
+      transparent 35%),
     linear-gradient(135deg,
       #151515,
       #252525 55%,
@@ -260,7 +273,7 @@
 }
 
 .discover-featured-area .discover-row-label {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .discover-featured-area .discover-row-header h2 {
@@ -276,9 +289,11 @@
 }
 
 .discover-featured-area .discover-row-arrow:hover {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(198, 92, 80, 0.45);
 
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(163, 58, 58, 0.3);
+
+  transform: translateX(3px);
 }
 
 .discover-featured-area .discover-card-info h3 {
@@ -322,7 +337,7 @@
 .discover-row-label {
   margin: 0 0 5px;
 
-  color: #a0a0a0;
+  color: #8f2f2f;
 
   font-size: 0.58rem;
   font-weight: 750;
@@ -363,13 +378,15 @@
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
+    color 0.2s ease,
     transform 0.2s ease;
 }
 
 .discover-row-arrow:hover {
-  border-color: rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-border, #e8caca);
 
-  background: #ffffff;
+  background: var(--accent-soft, #f6eaea);
+  color: var(--accent-dark, #8f2f2f);
 
   transform: translateX(3px);
 }
@@ -448,6 +465,10 @@
     0 5px 13px rgba(0, 0, 0, 0.06);
 
   isolation: isolate;
+}
+
+.discover-card:hover .discover-card-image-wrapper {
+  border-color: rgba(163, 58, 58, 0.2);
 }
 
 .discover-card-image {
@@ -558,7 +579,7 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
 
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(163, 58, 58, 0.82);
   color: #ffffff;
 
   font-size: 0.55rem;
@@ -593,7 +614,7 @@
 }
 
 .discover-back-link:hover {
-  color: #171717;
+  color: var(--accent-dark, #8f2f2f);
 
   transform: translateX(-2px);
 }
@@ -642,6 +663,10 @@
 
   box-shadow:
     0 6px 15px rgba(0, 0, 0, 0.06);
+}
+
+.discover-result-card:hover .discover-result-image-wrapper {
+  border-color: rgba(163, 58, 58, 0.2);
 }
 
 .discover-result-image {
@@ -760,7 +785,7 @@
 
   border-radius: 50%;
 
-  background: #202020;
+  background: var(--accent, #a33a3a);
   color: #ffffff;
 
   font-size: 0.8rem;
@@ -790,7 +815,7 @@
   border: 0;
   border-radius: 8px;
 
-  background: #191919;
+  background: var(--accent, #a33a3a);
   color: #ffffff;
 
   font-size: 0.75rem;
@@ -804,7 +829,7 @@
 }
 
 .discover-error button:hover {
-  background: #333333;
+  background: var(--accent-dark, #8f2f2f);
 
   transform: translateY(-1px);
 }
