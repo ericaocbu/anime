@@ -34,9 +34,10 @@ function formatTime(timestamp) {
 function getDateKey(timestamp) {
   const date = new Date(timestamp * 1000);
 
-  return `${date.getFullYear()}-${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0",
+  )}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 function groupByDay(schedule) {
@@ -47,8 +48,7 @@ function groupByDay(schedule) {
       return;
     }
 
-    const airingAt =
-      item.nextAiringEpisode.airingAt;
+    const airingAt = item.nextAiringEpisode.airingAt;
 
     const key = getDateKey(airingAt);
 
@@ -68,17 +68,13 @@ function groupByDay(schedule) {
     .map((group) => ({
       ...group,
       items: group.items.sort(
-        (a, b) =>
-          a.nextAiringEpisode.airingAt -
-          b.nextAiringEpisode.airingAt
+        (a, b) => a.nextAiringEpisode.airingAt - b.nextAiringEpisode.airingAt,
       ),
     }));
 }
 
 function getDayNumber(timestamp) {
-  return new Date(
-    timestamp * 1000
-  ).getDate();
+  return new Date(timestamp * 1000).getDate();
 }
 
 function isToday(timestamp) {
@@ -99,26 +95,20 @@ function CalendarItem({ anime }) {
     return null;
   }
 
+  const airingToday = isToday(episode.airingAt);
+
   return (
     <Link
       to={`/anime/${anime.id}`}
-      className="calendar-item"
+      className={`calendar-item ${airingToday ? "calendar-item--today" : ""}`}
     >
-      <div className="calendar-item__time">
-        {formatTime(episode.airingAt)}
-      </div>
+      <div className="calendar-item__time">{formatTime(episode.airingAt)}</div>
 
       <div className="calendar-item__poster">
         {anime.image ? (
-          <img
-            src={anime.image}
-            alt={anime.title}
-            loading="lazy"
-          />
+          <img src={anime.image} alt={anime.title} loading="lazy" />
         ) : (
-          <div className="calendar-item__placeholder">
-            No Image
-          </div>
+          <div className="calendar-item__placeholder">No Image</div>
         )}
       </div>
 
@@ -126,11 +116,7 @@ function CalendarItem({ anime }) {
         <div className="calendar-item__title-row">
           <h3>{anime.title}</h3>
 
-          {isToday(episode.airingAt) && (
-            <span className="calendar-item__today">
-              Today
-            </span>
-          )}
+          {airingToday && <span className="calendar-item__today">Today</span>}
         </div>
 
         <div className="calendar-item__meta">
@@ -138,48 +124,32 @@ function CalendarItem({ anime }) {
             Episode {episode.episode}
           </span>
 
-          {anime.format && (
-            <span>{anime.format}</span>
-          )}
+          {anime.format && <span>{anime.format}</span>}
 
-          {anime.score != null && (
-            <span>
-              ★ {anime.score.toFixed(1)}
-            </span>
-          )}
+          {anime.score != null && <span>★ {anime.score.toFixed(1)}</span>}
         </div>
       </div>
 
-      <div className="calendar-item__arrow">
-        →
-      </div>
+      <div className="calendar-item__arrow">→</div>
     </Link>
   );
 }
 
 function Calendar() {
-  const [activeTab, setActiveTab] =
-    useState("all");
+  const [activeTab, setActiveTab] = useState("all");
 
-  const {
-    data: schedule = [],
-    isLoading,
-    isError,
-    error,
-  } = useSchedule();
+  const { data: schedule = [], isLoading, isError, error } = useSchedule();
 
   const { myList } = useMyList();
 
   const myShowIds = useMemo(
     () => new Set(myList.map((item) => item.id)),
-    [myList]
+    [myList],
   );
 
   const filteredSchedule = useMemo(() => {
     if (activeTab === "my") {
-      return schedule.filter((anime) =>
-        myShowIds.has(anime.id)
-      );
+      return schedule.filter((anime) => myShowIds.has(anime.id));
     }
 
     return schedule;
@@ -187,22 +157,20 @@ function Calendar() {
 
   const groupedSchedule = useMemo(
     () => groupByDay(filteredSchedule),
-    [filteredSchedule]
+    [filteredSchedule],
   );
 
   if (isLoading) {
     return (
       <div className="calendar">
         <header className="calendar__header">
-          <p className="calendar__eyebrow">
-            Schedule
-          </p>
+          <div>
+            <p className="calendar__eyebrow">Schedule</p>
 
-          <h1>Calendar</h1>
+            <h1>Calendar</h1>
 
-          <p>
-            Keep up with what’s airing.
-          </p>
+            <p>Keep up with what’s airing.</p>
+          </div>
         </header>
 
         <div className="calendar__tabs">
@@ -212,6 +180,7 @@ function Calendar() {
 
         <div className="calendar-loading">
           <div className="calendar-loading__day" />
+
           <div className="calendar-loading__items">
             <div />
             <div />
@@ -219,6 +188,7 @@ function Calendar() {
           </div>
 
           <div className="calendar-loading__day" />
+
           <div className="calendar-loading__items">
             <div />
             <div />
@@ -232,31 +202,24 @@ function Calendar() {
     return (
       <div className="calendar">
         <header className="calendar__header">
-          <p className="calendar__eyebrow">
-            Schedule
-          </p>
+          <div>
+            <p className="calendar__eyebrow">Schedule</p>
 
-          <h1>Calendar</h1>
+            <h1>Calendar</h1>
 
-          <p>
-            Keep up with what’s airing.
-          </p>
+            <p>Keep up with what’s airing.</p>
+          </div>
         </header>
 
         <div className="calendar-error">
-          <h2>
-            We couldn't load the calendar.
-          </h2>
+          <h2>We couldn't load the calendar.</h2>
 
           <p>
             {error?.message ||
               "Something went wrong while loading the airing schedule."}
           </p>
 
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-          >
+          <button type="button" onClick={() => window.location.reload()}>
             Try Again
           </button>
         </div>
@@ -268,21 +231,15 @@ function Calendar() {
     <div className="calendar">
       <header className="calendar__header">
         <div>
-          <p className="calendar__eyebrow">
-            Schedule
-          </p>
+          <p className="calendar__eyebrow">Schedule</p>
 
           <h1>Calendar</h1>
 
-          <p>
-            Keep up with what’s airing.
-          </p>
+          <p>Keep up with what’s airing.</p>
         </div>
 
         <div className="calendar__week-summary">
-          <strong>
-            {filteredSchedule.length}
-          </strong>
+          <strong>{filteredSchedule.length}</strong>
 
           <span>
             {filteredSchedule.length === 1
@@ -292,13 +249,17 @@ function Calendar() {
         </div>
       </header>
 
-      <div className="calendar__tabs">
+      <div
+        className="calendar__tabs"
+        role="tablist"
+        aria-label="Calendar views"
+      >
         <button
           type="button"
+          role="tab"
+          aria-selected={activeTab === "all"}
           className={`calendar__tab ${
-            activeTab === "all"
-              ? "calendar__tab--active"
-              : ""
+            activeTab === "all" ? "calendar__tab--active" : ""
           }`}
           onClick={() => setActiveTab("all")}
         >
@@ -307,10 +268,10 @@ function Calendar() {
 
         <button
           type="button"
+          role="tab"
+          aria-selected={activeTab === "my"}
           className={`calendar__tab ${
-            activeTab === "my"
-              ? "calendar__tab--active"
-              : ""
+            activeTab === "my" ? "calendar__tab--active" : ""
           }`}
           onClick={() => setActiveTab("my")}
         >
@@ -320,9 +281,7 @@ function Calendar() {
 
       {groupedSchedule.length === 0 ? (
         <div className="calendar-empty">
-          <div className="calendar-empty__icon">
-            ○
-          </div>
+          <div className="calendar-empty__icon">○</div>
 
           <h2>
             {activeTab === "my"
@@ -337,56 +296,61 @@ function Calendar() {
           </p>
 
           {activeTab === "my" && (
-            <Link
-              to="/discover"
-              className="calendar-empty__link"
-            >
+            <Link to="/discover" className="calendar-empty__link">
               Find something to watch
             </Link>
           )}
         </div>
       ) : (
         <div className="calendar__schedule">
-          {groupedSchedule.map((day) => (
-            <section
-              key={day.key}
-              className="calendar-day"
-            >
-              <div className="calendar-day__header">
-                <div className="calendar-day__date">
-                  <span className="calendar-day__weekday">
-                    {formatShortDay(day.timestamp)}
-                  </span>
+          {groupedSchedule.map((day) => {
+            const dayIsToday = isToday(day.timestamp);
 
-                  <span className="calendar-day__number">
-                    {getDayNumber(day.timestamp)}
-                  </span>
+            return (
+              <section
+                key={day.key}
+                className={`calendar-day ${
+                  dayIsToday ? "calendar-day--today" : ""
+                }`}
+              >
+                <div className="calendar-day__header">
+                  <div className="calendar-day__date">
+                    <span className="calendar-day__weekday">
+                      {formatShortDay(day.timestamp)}
+                    </span>
+
+                    <span className="calendar-day__number">
+                      {getDayNumber(day.timestamp)}
+                    </span>
+                  </div>
+
+                  <div className="calendar-day__heading">
+                    <div className="calendar-day__title-row">
+                      <h2>{formatDay(day.timestamp)}</h2>
+
+                      {dayIsToday && (
+                        <span className="calendar-day__today">Today</span>
+                      )}
+                    </div>
+
+                    <span>
+                      {day.items.length}{" "}
+                      {day.items.length === 1 ? "episode" : "episodes"}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="calendar-day__heading">
-                  <h2>
-                    {formatDay(day.timestamp)}
-                  </h2>
-
-                  <span>
-                    {day.items.length}{" "}
-                    {day.items.length === 1
-                      ? "episode"
-                      : "episodes"}
-                  </span>
+                <div className="calendar-day__items">
+                  {day.items.map((anime) => (
+                    <CalendarItem
+                      key={`${anime.id}-${anime.nextAiringEpisode?.episode}`}
+                      anime={anime}
+                    />
+                  ))}
                 </div>
-              </div>
-
-              <div className="calendar-day__items">
-                {day.items.map((anime) => (
-                  <CalendarItem
-                    key={`${anime.id}-${anime.nextAiringEpisode?.episode}`}
-                    anime={anime}
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
+              </section>
+            );
+          })}
         </div>
       )}
     </div>
