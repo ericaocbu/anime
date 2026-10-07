@@ -9,11 +9,7 @@ function Search() {
   const query = searchParams.get("q")?.trim() || "";
   const page = Number(searchParams.get("page")) || 1;
 
-  const {
-    data,
-    isLoading,
-    isError,
-  } = useSearchAnime(query, page);
+  const { data, isLoading, isError } = useSearchAnime(query, page);
 
   const results = data?.data || [];
   const pagination = data?.pagination;
@@ -36,9 +32,7 @@ function Search() {
         <div className="search-results-page__empty">
           <SearchIcon />
           <h1>Search anime</h1>
-          <p>
-            Use the search button above to find an anime.
-          </p>
+          <p>Use the search button above to find an anime.</p>
         </div>
       </section>
     );
@@ -47,19 +41,15 @@ function Search() {
   return (
     <section className="search-results-page">
       <div className="search-results-page__header">
-        <p className="search-results-page__eyebrow">
-          Search results
-        </p>
+        <p className="search-results-page__eyebrow">Search results</p>
 
         <h1>
-          Results for{" "}
-          <span>"{query}"</span>
+          Results for <span>"{query}"</span>
         </h1>
 
         {!isLoading && !isError && (
           <p className="search-results-page__count">
-            {pagination?.items?.total || results.length} anime
-            found
+            {pagination?.items?.total || results.length} anime found
           </p>
         )}
       </div>
@@ -74,8 +64,8 @@ function Search() {
         <div className="search-results-page__message">
           <h2>Search is temporarily unavailable.</h2>
           <p>
-            Couldn't complete this search right now.
-            Please try again in a moment.
+            Couldn't complete this search right now. Please try again in a
+            moment.
           </p>
         </div>
       )}
@@ -84,8 +74,8 @@ function Search() {
         <div className="search-results-page__message">
           <h2>No exact results found.</h2>
           <p>
-            Try a shorter title, an alternate spelling, or a
-            different part of the anime's name.
+            Try a shorter title, an alternate spelling, or a different part of
+            the anime's name.
           </p>
         </div>
       )}
@@ -104,14 +94,9 @@ function Search() {
                 Previous
               </button>
 
-              <span>
-                Page {page}
-              </span>
+              <span>Page {page}</span>
 
-              <button
-                type="button"
-                onClick={() => goToPage(page + 1)}
-              >
+              <button type="button" onClick={() => goToPage(page + 1)}>
                 Next
               </button>
             </div>
