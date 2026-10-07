@@ -1,16 +1,49 @@
-# React + Vite
+# Anime Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern anime discovery and tracking web application built with React, powered by the AniList GraphQL API.
 
-Currently, two official plugins are available:
+[Live Demo](https://a4anime.vercel.app/) 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Overview
 
-## React Compiler
+A web application for discovering anime, keeping track of what you're watching, and exploring upcoming and currently airing series.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The project was designed with a focus on clean information hierarchy, simple navigation, responsive browsing, and a more modern alternative to traditional anime tracking interfaces.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Anime discovery** — Browse popular, highly rated, seasonal, and genre-based anime. <br>
+**Personalized tracking** — Add anime to a personal list and track watch status and episode progress. <br>
+**Anime details** — View information, episodes, ratings, recommendations, and related content. <br>
+**Seasonal calendar** — Browse currently airing anime by day. <br>
+**User profiles** — Manage profile information, favorites, and viewing statistics. <br>
+**Authentication** — User accounts and lists are persisted with Supabase. <br>
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+- CSS
+- AniList GraphQL API
+- Supabase
+- React Router
+- Lucide React
+
+## Design & Development
+
+This project combines front-end development with UX/UI design, including:
+
+- Responsive interface design
+- Component-based React architecture
+- API data normalization
+- User authentication
+- Persistent user data
+- Reusable UI components
+- Mobile-friendly browsing patterns
+
+## API & Data
+
+Anime data is provided by the AniList GraphQL API.
+
+Supabase is used for authentication and persistent user data, including watchlists, viewing progress, ratings, and profile information.
